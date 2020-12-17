@@ -177,6 +177,40 @@ namespace MimeTypes
             return _mappings.Value.TryGetValue(extension, out string mime) ? mime : DefaultMimeType;
         }
 
+        public static bool ExistType(string extension)
+        {
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                return false;
+            }
+            
+            foreach (var pair in _mappings.Value.Keys)
+            {
+                if (pair.EndsWith(extension))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        public static bool IsVideoType(string extension)
+        {
+            foreach (var pair in _mappings.Value)
+            {
+                if (pair.Key.EndsWith(extension))
+                {
+                    if (pair.Value.StartsWith("video"))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static string GetExtension(string mimeType, bool throwErrorIfNotFound = true)
         {
             if (mimeType == null)
@@ -201,5 +235,20 @@ namespace MimeTypes
 
             return string.Empty;
         }
+        
+        public static bool ExistMimeType(string mimeType)
+        {
+            foreach (var pair in _mappings.Value.Keys)
+            {
+                if (pair.EndsWith(mimeType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        
     }
 }
